@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Roblox • Game Development Studio</title>
+  <meta name="description" content="Random Roblox Game Developing Studio — Dev Blog, Game News, Projects & Live Roblox Status">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+</head>
+<body>
+  <!-- Background effects -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+  <div class="particles" id="particles"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="#home" class="logo" data-nav="home">
+        <span class="logo-icon">◆</span>
+        <span class="logo-text">Random<span class="accent">Roblox</span></span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="#home" class="nav-link active" data-nav="home" data-i18n="nav.home">Home</a>
+        <a href="#projects" class="nav-link" data-nav="projects" data-i18n="nav.projects">Projects</a>
+        <a href="#blog" class="nav-link" data-nav="blog" data-i18n="nav.blog">Dev Blog</a>
+        <a href="#news" class="nav-link" data-nav="news" data-i18n="nav.news">Game News</a>
+        <a href="#about" class="nav-link" data-nav="about" data-i18n="nav.about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button class="lang-btn" id="langToggle" title="Switch language">
+          <span id="langLabel">EN</span>
+        </button>
+        <button class="admin-btn" id="adminBtn" title="Admin">
+          <span id="adminBtnIcon">🔒</span>
+          <span id="adminBtnLabel">Admin</span>
+        </button>
+        <button class="menu-btn" id="menuBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section id="home" class="section hero">
+      <div class="container">
+        <div class="hero-content">
+          <div class="hero-badge" data-i18n="hero.badge">✦ Independent Roblox Studio</div>
+          <h1 class="hero-title">
+            <span data-i18n="hero.title1">We build</span>
+            <span class="gradient-text" data-i18n="hero.title2">Random Games</span>
+            <span data-i18n="hero.title3">that feel alive</span>
+          </h1>
+          <p class="hero-desc" data-i18n="hero.desc">
+            From chaotic prototypes to polished experiences. Track our projects, read the dev blog, and stay updated with the latest game news.
+          </p>
+          <div class="hero-cta">
+            <a href="#projects" class="btn btn-primary" data-i18n="hero.cta1">View Projects</a>
+            <a href="#blog" class="btn btn-ghost" data-i18n="hero.cta2">Read Dev Blog</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <span class="stat-num" id="statGames">0</span>
+              <span class="stat-label" data-i18n="stats.games">Games</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" id="statOnline">0</span>
+              <span class="stat-label" data-i18n="stats.online">Online</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" id="statPosts">0</span>
+              <span class="stat-label" data-i18n="stats.posts">Blog Posts</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="orb orb-1"></div>
+          <div class="orb orb-2"></div>
+          <div class="orb orb-3"></div>
+          <div class="hero-card">
+            <div class="hero-card-header">
+              <span class="pulse-dot"></span>
+              <span data-i18n="hero.live">Live Status</span>
+            </div>
+            <div class="hero-card-body" id="heroLive">
+              <!-- filled by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title" data-i18n="projects.title">Our Projects</h2>
+          <p class="section-desc" data-i18n="projects.desc">Paste a Roblox game link — we fetch the real data and let you set the status.</p>
+        </div>
+
+        <!-- Add Game Form (admin only) -->
+        <div class="add-game-panel admin-only" id="addGamePanel" style="display:none;">
+          <div class="add-game-form">
+            <input type="text" id="gameUrlInput" placeholder="https://www.roblox.com/games/123456789/Game-Name or Place ID" data-i18n-placeholder="projects.placeholder">
+            <select id="gameStatusSelect">
+              <option value="in_dev" data-i18n="status.in_dev">In Development</option>
+              <option value="coming_soon" data-i18n="status.coming_soon">Coming Soon</option>
+              <option value="online" data-i18n="status.online">Online</option>
+              <option value="beta" data-i18n="status.beta">Beta</option>
+              <option value="maintenance" data-i18n="status.maintenance">Maintenance</option>
+              <option value="offline" data-i18n="status.offline">Offline</option>
+            </select>
+            <button class="btn btn-primary" id="addGameBtn" data-i18n="projects.add">Add Game</button>
+          </div>
+          <p class="form-hint" data-i18n="projects.hint">Data is stored locally in your browser (demo). For production use Supabase / Vercel KV.</p>
+        </div>
+
+        <div class="projects-grid" id="projectsGrid">
+          <!-- Cards injected by JS -->
+        </div>
+
+        <div class="empty-state" id="projectsEmpty" style="display:none;">
+          <div class="empty-icon">🎮</div>
+          <p data-i18n="projects.empty">No projects yet. Add your first Roblox game above!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEV BLOG -->
+    <section id="blog" class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title" data-i18n="blog.title">Dev Blog</h2>
+          <p class="section-desc" data-i18n="blog.desc">Behind the scenes, progress updates, and development thoughts.</p>
+        </div>
+
+        <div class="blog-actions admin-only" style="display:none;">
+          <button class="btn btn-ghost btn-sm" id="addBlogBtn" data-i18n="blog.add">+ New Post</button>
+        </div>
+
+        <div class="blog-list" id="blogList">
+          <!-- posts -->
+        </div>
+
+        <div class="empty-state" id="blogEmpty" style="display:none;">
+          <div class="empty-icon">📝</div>
+          <p data-i18n="blog.empty">No blog posts yet.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- GAME NEWS -->
+    <section id="news" class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title" data-i18n="news.title">Game News</h2>
+          <p class="section-desc" data-i18n="news.desc">Announcements, updates and community highlights.</p>
+        </div>
+
+        <div class="blog-actions admin-only" style="display:none;">
+          <button class="btn btn-ghost btn-sm" id="addNewsBtn" data-i18n="news.add">+ New News</button>
+        </div>
+
+        <div class="news-grid" id="newsGrid">
+          <!-- news cards -->
+        </div>
+
+        <div class="empty-state" id="newsEmpty" style="display:none;">
+          <div class="empty-icon">📰</div>
+          <p data-i18n="news.empty">No news yet.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section section-alt">
+      <div class="container">
+        <div class="about-grid">
+          <div class="about-text">
+            <h2 class="section-title" data-i18n="about.title">About Random Roblox</h2>
+            <p data-i18n="about.p1">We are a small independent studio creating fun, experimental and sometimes completely random Roblox experiences.</p>
+            <p data-i18n="about.p2">This site is a living dashboard of our projects. Paste any Roblox game link and we pull live data (name, visits, players, thumbnail) so you always see the real status.</p>
+            <p data-i18n="about.p3">Built with pure HTML, CSS & JavaScript. Ready for Vercel + database (Supabase recommended).</p>
+            <div class="about-tags">
+              <span>Roblox</span>
+              <span>Luau</span>
+              <span>Game Design</span>
+              <span>Open Source Ready</span>
+            </div>
+          </div>
+          <div class="about-card">
+            <h3 data-i18n="about.stack">Tech Stack</h3>
+            <ul>
+              <li>HTML5 + CSS3 (Glassmorphism)</li>
+              <li>Vanilla JavaScript</li>
+              <li>Roblox Public API (via proxy)</li>
+              <li>localStorage (demo DB)</li>
+              <li>Vercel-ready static deploy</li>
+            </ul>
+            <h3 data-i18n="about.db">For Production DB</h3>
+            <p class="small" data-i18n="about.dbHint">Replace localStorage with Supabase / Firebase / Vercel Postgres + serverless API routes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="logo-icon">◆</span> Random<span class="accent">Roblox</span>
+      </div>
+      <p class="footer-copy">© 2026 Random Roblox Game Developing. Made with ❤️ for the Roblox community.</p>
+      <div class="footer-links">
+        <a href="https://www.roblox.com" target="_blank" rel="noopener">Roblox</a>
+        <a href="https://create.roblox.com" target="_blank" rel="noopener">Creator Hub</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal: Edit Status / Blog / News -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">×</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Admin Login Modal -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal login-modal">
+      <button class="modal-close" id="loginModalClose">×</button>
+      <div class="login-header">
+        <div class="login-icon">🔐</div>
+        <h3 data-i18n="admin.title">Admin Login</h3>
+        <p class="login-subtitle" data-i18n="admin.subtitle">Enter password to manage projects, blog and news</p>
+      </div>
+      <form id="loginForm" autocomplete="off">
+        <label for="adminPassword" data-i18n="admin.password">Password</label>
+        <input type="password" id="adminPassword" placeholder="••••••••" required autocomplete="current-password">
+        <p class="login-error" id="loginError" style="display:none;" data-i18n="admin.error">Wrong password</p>
+        <div class="modal-actions" style="margin-top:20px;">
+          <button type="button" class="btn btn-ghost" id="loginCancel" data-i18n="btn.cancel">Cancel</button>
+          <button type="submit" class="btn btn-primary" data-i18n="admin.submit">Sign in</button>
+        </div>
+      </form>
+      <p class="login-hint" data-i18n="admin.hint">Default password: random2026</p>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
